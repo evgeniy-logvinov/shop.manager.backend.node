@@ -1,6 +1,7 @@
 // Simulate config options from your production environment by
 // customising the .env file in your project's root folder.
 require('dotenv').config();
+require('./require.js')
 
 // Require keystone
 var keystone = require('keystone');
@@ -15,18 +16,24 @@ keystone.init({
 
 	'less': 'public',
 	'static': 'public',
-	'favicon': 'public/favicon.ico',
+	'signin logo': ['https://res.cloudinary.com/evgeniy-logvinov/image/upload/v1539775892/handmade.frontend/logo/logoHM.png',
+					200,
+					200], // relative to public directory
+	'favicon': 'public/images/favicon.ico',
 	'views': 'templates/views',
 	'view engine': 'pug',
+	'auto update': (process.env.AUTO_UPDATE === 'true'),
+
+	'cloudinary folders': true,
 
 	'auto update': true,
 	'session': true,
 	'auth': true,
-	'user model': 'SMUser',
+	'user model': 'User',
 });
 
 // Load your project's Models
-keystone.import('models');
+keystone.import('lib/models');
 
 // Setup common locals for your templates. The following are required for the
 // bundled templates and layouts. Any runtime locals (that should be set uniquely
@@ -39,16 +46,16 @@ keystone.set('locals', {
 });
 
 // Load your project's Routes
-keystone.set('routes', require('./routes'));
+keystone.set('routes', requireRoot('lib/routes'))
 
+keystone.set('cors allow origin', true)
 
 // Configure the navigation bar in Keystone's Admin UI
 keystone.set('nav', {
-	smusers: 'smusers',
-});
+	users: 'users',
+	'Shop': ['baskets', 'products', 'product-types', 'product-in-baskets']
+})
 
 // Start Keystone to connect to your database and initialise the web server
-
-
 
 keystone.start();

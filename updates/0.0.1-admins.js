@@ -8,7 +8,7 @@
  */
 
 exports.create = {
-	SMUser: [
+	User: [
 		{ 'name.first': 'Admin', 'name.last': 'User', 'email': 'admin@gmail.com', 'password': 'admin', 'isAdmin': true },
 	],
 };
